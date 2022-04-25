@@ -50,7 +50,7 @@ summary(rsf)
 print("Fitted RSF")
 
 # Calculate the RSF-informed AKDE
-ud_rsf <- akde(rsf, R=list(trees))
+ud_rsf <- akde(train, rsf, R=list(trees=r2))
   
 # Cross-validate the UDs ###
 
