@@ -17,7 +17,7 @@ aid <- df$individual.local.identifier[1]
 l <- as.telemetry(df)
 
 # Load habitat raster (trees) and crop it to save some time and RAM
-r1 <- raster("data/pantanal_trees.tif")
+r1 <- raster("data/treecover2010.tif")
 e <- extent(min(l$longitude) - 0.2, max(l$longitude) + 0.2, min(l$latitude) - 0.2, max(l$latitude) + 0.2)
 r2 <- crop(r1, e)
 
@@ -47,7 +47,7 @@ print("UD created")
 # Fit the RSF ###
 rsf <- ctmm:::rsf.fit(train, UD=ud, R=list(), debias=TRUE, error=0.01)
 summary(rsf)
-print("Fitted RSF") 
+print("Fitted RSF")
 
 # Calculate the RSF-informed AKDE
 ud_rsf <- akde(rsf, R=list(trees))
@@ -56,20 +56,20 @@ ud_rsf <- akde(rsf, R=list(trees))
 
 # Export the UDs as sp objects
 ud95 <- SpatialPolygonsDataFrame.UD(ud, level.UD = 0.95)
-ud50 <- SpatialPolygonsDataFrame.UD(ud, level.UD = 0.95)
+ud50 <- SpatialPolygonsDataFrame.UD(ud, level.UD = 0.50)
 
 ud95_rsf <- SpatialPolygonsDataFrame.UD(ud_rsf, level.UD = 0.95)
-ud50_rsf <- SpatialPolygonsDataFrame.UD(ud_rsf, level.UD = 0.95)
+ud50_rsf <- SpatialPolygonsDataFrame.UD(ud_rsf, level.UD = 0.50)
 
 # Export the test data as an sp object
 test_sp <- SpatialPoints.telemetry(test)
 
 # Determine which points are inside the 95% OD
-pct95 <- round(unname(GISTools:::poly.counts(test_sp, ud95))/nrow(test)*100, 2)
-pct50 <- round(unname(GISTools:::poly.counts(test_sp, ud50))/nrow(test)*100, 2)
+pct95 <- round(unname(GISTools:::poly.counts(test_sp, ud95)[2])/nrow(test)*100, 2)
+pct50 <- round(unname(GISTools:::poly.counts(test_sp, ud50)[2])/nrow(test)*100, 2)
 
-pct95_rsf <- round(unname(GISTools:::poly.counts(test_sp, ud95_rsf))/nrow(test)*100, 2)
-pct50_rsf <- round(unname(GISTools:::poly.counts(test_sp, ud50_rsf))/nrow(test)*100, 2)
+pct95_rsf <- round(unname(GISTools:::poly.counts(test_sp, ud95_rsf)[2])/nrow(test)*100, 2)
+pct50_rsf <- round(unname(GISTools:::poly.counts(test_sp, ud50_rsf)[2])/nrow(test)*100, 2)
 
 eTime <- Sys.time()
   
