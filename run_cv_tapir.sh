@@ -34,6 +34,6 @@ else
 fi
 
 
-Rscript cross_validation_tapir.R ${SLURM_ARRAY_TASK_ID}     # name of script
+Rscript cv_tapir.R ${SLURM_ARRAY_TASK_ID}     # name of script
 echo "Script complete"
 date
