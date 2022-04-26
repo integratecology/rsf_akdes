@@ -1,6 +1,7 @@
 # PACKAGES ####
 library(sp)
 library(raster)
+library(data.table)
 library(ctmm)
 library(GISTools)
 
