@@ -48,7 +48,7 @@ ud_area <- summary(ud)$CI[1,2]
 print("UD created")
 
 # Fit the RSF ###
-rsf <- ctmm:::rsf.fit(train, UD=ud, R=list(), debias=TRUE, error=0.01)
+rsf <- ctmm:::rsf.fit(train, UD=ud, R=list(trees=r2), debias=TRUE, error=0.01)
 summary(rsf)
 print("Fitted RSF")
 

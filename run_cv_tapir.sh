@@ -6,7 +6,7 @@
 #SBATCH --ntasks-per-node=1        # number of tasks (i.e. parallel processes) to be started
 #SBATCH --cpus-per-task=1          # number of cpus required to run the script
 #SBATCH --mem-per-cpu=32G	   # memory required for process
-#SBATCH --array=1-400%125    	   # set number of total simulations and number that can run simultaneously	  
+#SBATCH --array=1-28%28    	   # set number of total simulations and number that can run simultaneously	  
 
 
 module load gcc
@@ -22,6 +22,8 @@ module load R
 
 cd /home/alston92/proj/rsf_akdes  # where executable and data is located
 
+list=(/home/alston92/proj/rsf_akdes/data/*_r.csv)
+
 date
 echo "Initiating script"
 
@@ -34,6 +36,6 @@ else
 fi
 
 
-Rscript cv_tapir.R ${SLURM_ARRAY_TASK_ID}     # name of script
+Rscript cv_tapir.R ${list[SLURM_ARRAY_TASK_ID]}     # name of script
 echo "Script complete"
 date
