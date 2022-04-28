@@ -44,7 +44,8 @@ print("Fitted movement model")
 # Calculate the habitat-naive AKDE UD ###
 ud <- akde(train, fit, weights=TRUE)
 ess <- summary(ud)$DOF["area"]
-ud_area <- summary(ud)$CI[1,2]
+ud95_area <- summary(ud, level.UD=0.95, units=FALSE)$CI[1,2]
+ud50_area <- summary(ud, level.UD=0.50, units=FALSE)$CI[1,2]
 print("UD created")
 
 # Fit the RSF ###
@@ -54,7 +55,8 @@ print("Fitted RSF")
 
 # Calculate the RSF-informed AKDE
 ud_rsf <- akde(train, rsf, R=list(trees=r2))
-ud_rsf_area <- summary(ud_rsf)$CI[1,2]
+ud95_rsf_area <- summary(ud_rsf, level.UD=0.95, units=FALSE)$CI[1,2]
+ud50_rsf_area <- summary(ud_rsf, level.UD=0.50, units=FALSE)$CI[1,2]
 
 # Cross-validate the UDs ###
 
@@ -78,7 +80,7 @@ pct50_rsf <- round(unname(GISTools:::poly.counts(test_sp, ud50_rsf)[2])/nrow(tes
 eTime <- Sys.time()
   
 # Create vector of results
-results <- data.frame(aid, ind_file, ess, ud_area, pct95, pct50, ud_rsf_area, pct95_rsf, pct50_rsf)
+results <- data.frame(aid, ind_file, ess, ud95_area, ud50_area, pct95, pct50, ud95_rsf_area, ud50_rsf_area, pct95_rsf, pct50_rsf)
   
 # Store results in data.frame
 write.table(results, 'results/cv_summary_tapir.csv', append=TRUE, row.names=FALSE, col.names=FALSE, sep=',') 
