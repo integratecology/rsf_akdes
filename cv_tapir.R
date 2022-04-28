@@ -84,6 +84,8 @@ results <- data.frame(aid, ind_file, ess, ud95_area, ud50_area, pct95, pct50, ud
   
 # Store results in data.frame
 write.table(results, 'results/cv_summary_tapir.csv', append=TRUE, row.names=FALSE, col.names=FALSE, sep=',') 
+
+# Save important objects to an Rda file
 save(df,svf,fit,ud,rsf,ud_rsf,file=paste0(aid,".Rda"))
   
 # Print indicators of progress
