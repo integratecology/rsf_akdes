@@ -125,10 +125,20 @@ pct80_rsf <- round(unname(GISTools:::poly.counts(test_sp, ud80_rsf)[2])/nrow(tes
 pct90_rsf <- round(unname(GISTools:::poly.counts(test_sp, ud90_rsf)[2])/nrow(test)*100, 2)
 pct99_rsf <- round(unname(GISTools:::poly.counts(test_sp, ud99_rsf)[2])/nrow(test)*100, 2)
 
+# Cross-validated log-likelihood
+ud_r <- raster(ud, DF = "PDF")
+ud_rsf_r <- raster(ud_rsf, DF = "PDF")
+
+cv_ll_u <- raster::extract(ud_r, test_sp)
+cv_ll_ud <- sum(cv_ll_u)
+
+cv_ll_r <- raster::extract(ud_rsf_r, test_sp)
+cv_ll_rsf <- sum(cv_ll_r)
+
 eTime <- Sys.time()
   
 # Create vector of results
-results <- data.frame(aid, ind_file, ess, 
+results <- data.frame(aid, ind_file, ess, cv_ll_ud, cv_ll_rsf, 
 		      ud10_area, ud20_area, ud30_area, ud40_area, ud50_area, ud60_area, ud70_area, ud80_area, ud90_area, ud99_area, 
 		      ud10_rsf_area, ud20_rsf_area, ud30_rsf_area, ud40_rsf_area, ud50_rsf_area, ud60_rsf_area, ud70_rsf_area, ud80_rsf_area, ud90_rsf_area, ud99_rsf_area,
 		      pct10, pct20, pct30, pct40, pct50, pct60, pct70, pct80, pct90, pct99,
