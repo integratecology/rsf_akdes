@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=tapir_cv        # name of the job
+#SBATCH --job-name=serval_cv       # name of the job
 #SBATCH --partition=defq,intel     # partition to be used (defq, gpu or intel)
 #SBATCH --time=4:00:00             # walltime (up to 96 hours)
 #SBATCH --nodes=1                  # number of nodes
