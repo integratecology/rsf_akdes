@@ -18,19 +18,9 @@ aid <- df$individual.local.identifier[1]
 l <- as.telemetry(df)
 
 # Load habitat raster (trees) and crop it to save some time and RAM
-r1 <- raster("data/KZN_2017_Landuse_latlong.tif")
+r1 <- raster("data/treecover2010.tif")
 e <- extent(min(l$longitude) - 0.2, max(l$longitude) + 0.2, min(l$latitude) - 0.2, max(l$latitude) + 0.2)
 r2 <- crop(r1, e)
-
-m1 <- c(1, 14, 0, 15, 17, 1, 18, 48, 0)
-rclmat1 <- matrix(m1, ncol = 3, byrow = TRUE)
-ag <- reclassify(r2, rclmat1, include.lowest=TRUE, right = NA)
-ag@data@values <- as.logical(ag@data@values)
-
-m1 <- c(1, 3, 0, 4, 5, 1, 6, 48, 0)
-rclmat1 <- matrix(m1, ncol = 3, byrow = TRUE)
-wl <- reclassify(r2, rclmat1, include.lowest=TRUE, right = NA)
-wl@data@values <- as.logical(wl@data@values)
 
 # Record start time to monitor how long replicates take to compute
 sTime <- Sys.time()
@@ -67,12 +57,12 @@ ud99_area <- summary(ud, level.UD=0.99, units=FALSE)$CI[1,2]
 print("UD created")
 
 # Fit the RSF ###
-rsf <- ctmm:::rsf.fit(train, UD=ud, R=list(ag=ag,wl=wl), debias=TRUE, error=0.01)
+rsf <- ctmm:::rsf.fit(train, UD=ud, R=list(trees=r2), debias=TRUE, error=0.01)
 summary(rsf)
 print("Fitted RSF")
 
 # Calculate the RSF-informed AKDE
-ud_rsf <- akde(train, rsf, R=list(ag=ag,wl=wl))
+ud_rsf <- akde(train, rsf, R=list(trees=r2))
 ud10_rsf_area <- summary(ud_rsf, level.UD=0.10, units=FALSE)$CI[1,2]
 ud20_rsf_area <- summary(ud_rsf, level.UD=0.20, units=FALSE)$CI[1,2]
 ud30_rsf_area <- summary(ud_rsf, level.UD=0.30, units=FALSE)$CI[1,2]
@@ -145,7 +135,7 @@ results <- data.frame(aid, ind_file, ess,
 		      pct10_rsf, pct20_rsf, pct30_rsf, pct40_rsf, pct50_rsf, pct60_rsf, pct70_rsf, pct80_rsf, pct90_rsf, pct99_rsf)
   
 # Store results in data.frame
-write.table(results, 'results/cv_summary_serval.csv', append=TRUE, row.names=FALSE, col.names=FALSE, sep=',') 
+write.table(results, 'results/cv_summary_pa_tapir.csv', append=TRUE, row.names=FALSE, col.names=FALSE, sep=',') 
 
 # Save important objects to an Rda file
 save(df,svf,fit,ud,rsf,ud_rsf,file=paste0("results/",aid,".Rda"))

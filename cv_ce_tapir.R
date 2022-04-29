@@ -18,7 +18,7 @@ aid <- df$individual.local.identifier[1]
 l <- as.telemetry(df)
 
 # Load habitat raster (trees) and crop it to save some time and RAM
-r1 <- raster("data/treecover2010.tif")
+r1 <- raster("data/treecover2010_cerrado.tif")
 e <- extent(min(l$longitude) - 0.2, max(l$longitude) + 0.2, min(l$latitude) - 0.2, max(l$latitude) + 0.2)
 r2 <- crop(r1, e)
 
@@ -135,7 +135,7 @@ results <- data.frame(aid, ind_file, ess,
 		      pct10_rsf, pct20_rsf, pct30_rsf, pct40_rsf, pct50_rsf, pct60_rsf, pct70_rsf, pct80_rsf, pct90_rsf, pct99_rsf)
   
 # Store results in data.frame
-write.table(results, 'results/cv_summary_tapir.csv', append=TRUE, row.names=FALSE, col.names=FALSE, sep=',') 
+write.table(results, 'results/cv_summary_ce_tapir.csv', append=TRUE, row.names=FALSE, col.names=FALSE, sep=',') 
 
 # Save important objects to an Rda file
 save(df,svf,fit,ud,rsf,ud_rsf,file=paste0("results/",aid,".Rda"))
