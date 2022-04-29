@@ -67,7 +67,7 @@ ud99_area <- summary(ud, level.UD=0.99, units=FALSE)$CI[1,2]
 print("UD created")
 
 # Fit the RSF ###
-rsf <- ctmm:::rsf.fit(train, UD=ud, R=list(built_up=bu,water=water), debias=TRUE, error=0.01)
+rsf <- ctmm:::rsf.fit(train, UD=ud, R=list(bu=bu,water=water), debias=TRUE, error=0.01)
 summary(rsf)
 print("Fitted RSF")
 
