@@ -18,11 +18,11 @@ aid <- df$individual.local.identifier[1]
 l <- as.telemetry(df)
 
 # Load habitat raster (trees) and crop it to save some time and RAM
-r1 <- raster("data/sk_lc.tif")
+r1 <- raster("data/lc_sk.tif")
 
-coords <- cbind(l$location.long, l$location.lat)
+coords <- cbind(l$longitude, l$latitude)
 sp <- SpatialPoints(coords, proj4string=CRS("+proj=longlat +datum=WGS84 +no_defs"))
-sp <- spTransform(sp, raster::projection(lc))
+sp <- spTransform(sp, raster::projection(r1))
 
 e <- extent(extent(sp)[1] - 10000, extent(sp)[2] + 10000, extent(sp)[3] - 10000, extent(sp)[4] + 10000)
 r2 <- crop(r1, e)

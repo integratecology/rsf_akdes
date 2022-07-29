@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --job-name=serval_cv       # name of the job
+#SBATCH --job-name=moose_cv        # name of the job
 #SBATCH --partition=defq,intel     # partition to be used (defq, gpu or intel)
 #SBATCH --time=4:00:00             # walltime (up to 96 hours)
 #SBATCH --nodes=1                  # number of nodes
 #SBATCH --ntasks-per-node=1        # number of tasks (i.e. parallel processes) to be started
 #SBATCH --cpus-per-task=1          # number of cpus required to run the script
 #SBATCH --mem-per-cpu=32G	   # memory required for process
-#SBATCH --array=0-34%35    	   # set number of total simulations and number that can run simultaneously	  
+#SBATCH --array=0-23%24    	   # set number of total simulations and number that can run simultaneously	  
 
 
 module load gcc
